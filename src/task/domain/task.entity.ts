@@ -2,6 +2,7 @@
 //! Entidad: MOdelo de datos 
 
 export class Task {
+    id: string | undefined;
     constructor(
         public readonlyid: string,
         public title: string,
