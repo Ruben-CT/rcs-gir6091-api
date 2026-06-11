@@ -3,10 +3,10 @@ import { ITaskRepository } from '@/task/domain/task.repository.interface';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class TaskRepositoryImpl implements ITaskRepository {
+export default class TaskRepositoryImpl implements ITaskRepository {
     private tasks: Task[] = [];
 
-    async create(task: Task): Promise<Task> {
+    async create(task: Task): Promise<Task>{
         this.tasks.push(task);
         return (task);
     }

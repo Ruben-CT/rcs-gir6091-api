@@ -1,6 +1,7 @@
 import { Module } from "@nestjs/common";
 import { CreateTaskUseCase } from "../application/create-task.use";
-import { TaskRepositoryImpl } from "./persistence/task.repository.impl";
+import TaskRepositoryImpl from "./persistence/task.repository.impl";
+
 
 @Module({
     controllers: [TaskController],
