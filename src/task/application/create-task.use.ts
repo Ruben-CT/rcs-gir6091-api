@@ -12,7 +12,7 @@ export class CreateTaskUseCase {
         private readonly taskRepository: ITaskRepository,
     ){}
 
-    async execute(title: string, description: string): Promise<void> {
+        async execute(title: string, description: string): Promise<Task> {
         const crypto = await import('crypto');
         const task = new Task(
           crypto.randomUUID(),

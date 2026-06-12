@@ -2,9 +2,8 @@
 //! Entidad: MOdelo de datos 
 
 export class Task {
-    id: string | undefined;
     constructor(
-        public readonlyid: string,
+        public id: string,
         public title: string,
         public description: string,
         public status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED',

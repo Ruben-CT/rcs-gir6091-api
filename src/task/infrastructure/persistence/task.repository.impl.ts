@@ -3,10 +3,10 @@ import { ITaskRepository } from '@/task/domain/task.repository.interface';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export default class TaskRepositoryImpl implements ITaskRepository {
+export class TaskRepositoryImpl implements ITaskRepository {
     private tasks: Task[] = [];
 
-    async create(task: Task): Promise<Task>{
+    async create(task: Task): Promise<Task> {
         this.tasks.push(task);
         return (task);
     }
@@ -19,5 +19,16 @@ export default class TaskRepositoryImpl implements ITaskRepository {
         return this.tasks.find(task => task.id === id) || null;
          
     }
+    async update(updateTask: Task): Promise<Task> {
+        const index = this.tasks.findIndex(t => t.id === updateTask.id);
+        this.tasks[index] = updateTask;
+        return updateTask;
+    }
 
+    async delete(id: string): Promise<boolean> {
+        const index = this.tasks.findIndex(t => t.id === id);
+        if (index === -1) return false;
+        this.tasks.splice(index, 1);
+        return true;
+    }
 }

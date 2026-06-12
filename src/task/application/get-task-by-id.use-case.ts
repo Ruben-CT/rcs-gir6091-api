@@ -1,12 +1,13 @@
 import { Inject, Injectable} from "@nestjs/common";
 import type{ ITaskRepository } from "../domain/task.repository.interface";
 import { Task } from "../domain/task.entity";
+import { ITaskRepositoryToken } from "../domain/task.repository.interface";
 
 @Injectable()
 export class GetTaskByIdUseCase {
     
     constructor(
-        @Inject("ITaskRepositoryToken")
+        @Inject(ITaskRepositoryToken)
         private readonly taskRepository: ITaskRepository
     ) {}
 
