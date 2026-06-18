@@ -45,3 +45,8 @@ bootstrap();
 
 //? npm i --save @nestjs/swagger
 
+//! USO DE Prisma ORM
+//? npm i -D prisma
+//? npm i @prisma/client
+//? npx prisma init  --datasource-provider postgresql
+
