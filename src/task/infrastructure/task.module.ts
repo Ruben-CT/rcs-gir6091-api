@@ -6,6 +6,7 @@ import { DeleteTaskUseCase } from '../application/delete-task.use-case';
 import { ITaskRepositoryToken } from '../domain/task.repository.interface';
 import { TaskRepositoryImpl } from './persistence/task.repository.impl';
 import { TaskController } from './controllers/task.controller';
+import { TaskRepositoryPrismaImpl } from './persistence/task.repository.prisma.impl';
 
 
 @Module({
@@ -17,7 +18,7 @@ import { TaskController } from './controllers/task.controller';
         DeleteTaskUseCase,
         {
             provide: ITaskRepositoryToken,
-            useClass: TaskRepositoryImpl // Cambiar si la data base canbia.
+            useClass: TaskRepositoryPrismaImpl // Cambiar si la data base canbia.
         }
     ],
     exports: [ CreateTaskUseCase ]

@@ -3,11 +3,11 @@
 
 export class Task {
     constructor(
-        public id: string,
+        public readonly id: number,
         public title: string,
         public description: string,
         public status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED',
-        public createdAT: Date
+        public createdAt: Date
     ) {}
 
     // Lógical en la capa de dominio

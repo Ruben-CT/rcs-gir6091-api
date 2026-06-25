@@ -4,7 +4,7 @@ import { GetTaskByIdUseCase } from '@/task/application/get-task-by-id.use-case';
 import { UpdateTaskUseCase } from '@/task/application/update-task.use-case';
 import { ITaskRepositoryToken } from '@/task/domain/task.repository.interface';
 import type { ITaskRepository} from '@/task/domain/task.repository.interface';
-import {Body, Controller, Get, Inject, Post, Put, Param, Delete, HttpStatus, Patch, HttpCode} from '@nestjs/common'; 
+import {Body, Controller, Get, Inject, Post, Put, Param, Delete, HttpStatus, Patch, HttpCode, ParseIntPipe} from '@nestjs/common'; 
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateTaskDto } from './dtos/create-task.dto';
 import { UpdateTaskDto } from './dtos/update-task.dto';
@@ -43,14 +43,14 @@ export class TaskController {
     @ApiParam({ name: "id", description: "ID de la tarea (UUID)" })
     @ApiResponse({ status: HttpStatus.OK, description: "La tarea ha sido encontrada exitosamente." })
     @ApiResponse({ status: HttpStatus.NOT_FOUND, description: "No se encontró una tarea con el ID proporcionado." })    
-    async findOne(id: string) {
+    async findOne(@Param("id", ParseIntPipe) id:number) {
         return this.GetTaskByIdUseCase.execute(id);
     }
 
     @Patch(":id")
     @ApiOperation({ summary: "Actualiza una tarea por ID" })
     @ApiParam({ name: "id", description: "ID de la tarea a actualizar (UUID)" })
-    async update(@Param('id') id: string, @Body() updateTask: UpdateTaskDto) {
+    async update(@Param('id', ParseIntPipe) id: number, @Body() updateTask: UpdateTaskDto) {
         return this.updateTaskUseCase.execute(id, updateTask);
         
     }
@@ -60,7 +60,7 @@ export class TaskController {
     @ApiOperation({ summary: "Elimina una tarea por ID" })
     @ApiParam({ name: "id", description: "ID de la tarea a eliminar (UUID)" })
     @ApiResponse({ status: HttpStatus.NO_CONTENT, description: "Tarea eliminada " })
-    async delete(@Param('id') id: string) {
+    async delete(@Param('id', ParseIntPipe) id: number) {
         await this.deleteTaskUseCase.execute(id);
     }
 

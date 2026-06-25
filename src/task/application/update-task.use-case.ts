@@ -13,7 +13,7 @@ export class UpdateTaskUseCase {
         private readonly getTaskByIdUseCase: GetTaskByIdUseCase
     ) {}
 
-    async execute(id: string, updateData: Partial<Pick<Task, "title" | "description" | "status">>): Promise<Task> {
+    async execute(id: number, updateData: Partial<Pick<Task, "title" | "description" | "status">>): Promise<Task> {
         const task = await this.getTaskByIdUseCase.execute(id);
 
         if (updateData.title != undefined) task.title = updateData.title;
