@@ -20,9 +20,8 @@ export class UpdateTaskUseCase {
         if (updateData.description != undefined) task.description = updateData.description;
         if (updateData.status != undefined) {
             if (updateData.status === 'COMPLETED')
-                task.complete();
-            else
-                task.status = updateData.status;
+                task.status = "COMPLETED";
+
         }
         return await this.taskRepository.update(task);
     }
