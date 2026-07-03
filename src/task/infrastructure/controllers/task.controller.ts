@@ -4,32 +4,34 @@ import { GetTaskByIdUseCase } from '@/task/application/get-task-by-id.use-case';
 import { UpdateTaskUseCase } from '@/task/application/update-task.use-case';
 import { ITaskRepositoryToken } from '@/task/domain/task.repository.interface';
 import type { ITaskRepository} from '@/task/domain/task.repository.interface';
-import {Body, Controller, Get, Inject, Post, Put, Param, Delete, HttpStatus, Patch, HttpCode, ParseIntPipe} from '@nestjs/common'; 
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {Body, Controller, Get, Inject, Post, Put, Param, Delete, HttpStatus, Patch, HttpCode, ParseIntPipe, UseGuards} from '@nestjs/common'; 
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateTaskDto } from './dtos/create-task.dto';
 import { UpdateTaskDto } from './dtos/update-task.dto';
+import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
+import { RolesGuard } from '@/auth/guards/roles.guard';
+import { Roles } from '@/auth/decorators/roles.decorator';
 
 @ApiTags("tasks")
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('ADMIN')
 @Controller({path: "tasks", version: "1"})
 export class TaskController {
-
     constructor(
         private readonly createTaskUseCase: CreateTaskUseCase,
         private readonly GetTaskByIdUseCase: GetTaskByIdUseCase,
         private readonly updateTaskUseCase: UpdateTaskUseCase,
         private readonly deleteTaskUseCase: DeleteTaskUseCase,
-
         @Inject(ITaskRepositoryToken)
         private readonly taskRepository: ITaskRepository
         
     ) {}
-
     @Get()
     @ApiOperation({ summary: "Listar  todas las tareas" })
     async findAll() {
         return this.taskRepository.findAll();
     }
-
     @Post()
     @ApiOperation({ summary: "Crea una nueva tarea" })
     @ApiResponse({ status: HttpStatus.CREATED, description: "Tarea creada exitosamente." })
@@ -37,7 +39,6 @@ export class TaskController {
         return this.createTaskUseCase.execute(task.title, task.description);        
           
     }
-
    @Get(":id")
     @ApiOperation({ summary: "Obtiene una tarea por su ID" })
     @ApiParam({ name: "id", description: "ID de la tarea (UUID)" })
@@ -46,7 +47,6 @@ export class TaskController {
     async findOne(@Param("id", ParseIntPipe) id:number) {
         return this.GetTaskByIdUseCase.execute(id);
     }
-
     @Patch(":id")
     @ApiOperation({ summary: "Actualiza una tarea por ID" })
     @ApiParam({ name: "id", description: "ID de la tarea a actualizar (UUID)" })
@@ -54,7 +54,6 @@ export class TaskController {
         return this.updateTaskUseCase.execute(id, updateTask);
         
     }
-
     @Delete(":id")
     @HttpCode(HttpStatus.NO_CONTENT)
     @ApiOperation({ summary: "Elimina una tarea por ID" })
@@ -63,6 +62,5 @@ export class TaskController {
     async delete(@Param('id', ParseIntPipe) id: number) {
         await this.deleteTaskUseCase.execute(id);
     }
-
     
 }
