@@ -1,0 +1,64 @@
+<div class="login-page">
+  <mat-card class="login-card">
+    <div class="login-header">
+      <mat-icon class="login-icon">task_alt</mat-icon>
+      <h1>Task Management</h1>
+      <p>Inicia sesión para continuar</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="login-form">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Correo electrónico</mat-label>
+        <input matInput type="email" formControlName="email" placeholder="admin@rcs.com" />
+        <mat-icon matSuffix>email</mat-icon>
+        @if (form.controls.email.hasError('required') && form.controls.email.touched) {
+          <mat-error>El correo es requerido</mat-error>
+        }
+        @if (form.controls.email.hasError('email') && form.controls.email.touched) {
+          <mat-error>Ingresa un correo válido</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Contraseña</mat-label>
+        <input
+          matInput
+          [type]="hidePassword() ? 'password' : 'text'"
+          formControlName="password"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          type="button"
+          (click)="hidePassword.set(!hidePassword())"
+        >
+          <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        @if (form.controls.password.hasError('required') && form.controls.password.touched) {
+          <mat-error>La contraseña es requerida</mat-error>
+        }
+      </mat-form-field>
+
+      @if (errorMessage()) {
+        <div class="error-banner">
+          <mat-icon>error_outline</mat-icon>
+          <span>{{ errorMessage() }}</span>
+        </div>
+      }
+
+      <button
+        mat-flat-button
+        color="primary"
+        type="submit"
+        class="full-width submit-btn"
+        [disabled]="loading()"
+      >
+        @if (loading()) {
+          <mat-spinner diameter="20" style="display:inline-block; vertical-align:middle;"></mat-spinner>
+        } @else {
+          Iniciar sesión
+        }
+      </button>
+    </form>
+  </mat-card>
+</div>
